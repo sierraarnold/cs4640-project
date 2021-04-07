@@ -1,0 +1,66 @@
+h3 {
+	text-align: center;
+	margin:30px 10px 30px 10px;
+}
+label {
+	display: block;
+	text-align: left;
+}
+input {
+	display: block; 
+	margin: auto;
+	width: 100%;
+	padding: 4px 12px 4px 12px;
+	border: 1px solid #ccc; 
+	border-radius: 4px; 
+}
+input[type=submit] {
+	margin: 20px 10px 20px 10px; 
+	padding: 4px 12px 4px 12px;
+	border:0 none;
+	width: 15%;
+	cursor:pointer; 
+	border-radius: 5px; 
+}
+input[type=submit]:hover {
+	background-color: #ccceee; 
+}
+div {
+	margin-left: auto; 
+	margin-right: auto; 
+}
+html{
+	height:100%; }
+body{
+	min-height:100%; 
+	padding:0; 
+	margin:0; 
+	position:relative; 
+}
+.container {
+	margin-left: auto; 
+	margin-right: auto; 
+	width: 90%;
+}
+.login-form, .signup-form {
+	text-align: center;
+}
+.input-area {
+	width: 20%;
+	text-align: center;
+}
+.login-link, .signup {
+	text-align: center; 
+	margin: auto; 
+	padding: auto; 
+	font-family:arial; 
+	font-size: small; 
+}
+.unit {
+	display: inline-block;
+	margin: auto; 
+	padding: auto;
+}
+.conversion-box {
+	width: 65%;
+}
