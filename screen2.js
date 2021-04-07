@@ -1,5 +1,3 @@
-// Rick kim
-
 // Variables
 var categories = new Array();
 var initialValue = document.getElementById('initialVal');
