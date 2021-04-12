@@ -4,7 +4,7 @@
 	<meta charset="utf-8">   
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- required to handle IE -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">  
- 	<meta name="author" content="Sierra Arnold & Min Suk Kim">
+	<meta name="author" content="Sierra Arnold & Min Suk Kim">
 	<title>Sign Up | HoosConvert</title>
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
@@ -38,7 +38,7 @@
 
 	<div class="container">  
 		<h3>Create a HoosConvert Account</h3>
-		<form class="signup-form" onsubmit="return validateSignup()" action="<?php $_SERVER['PHP_SELF']?>" method="post">
+		<form class="signup-form" action="<?php $_SERVER['PHP_SELF']?>" method="post">
 			<div class="input-area">
 				<label>Email:</label>
 				<input type="email" name="emailaddr" id="emailaddr"/> <br/>
@@ -55,10 +55,11 @@
 			<input type="submit" value="Sign up" class="btn btn-secondary" />
 			<p class="signup">Already have an account?<br/>
 				<a href="login.php">Log in</a> here</p> <br/>
-		</form>
-	</div>
+			</form>
+		</div>
 
-	<script type="text/javascript">
+		<!-- unused JS error messages -->
+	<!-- <script type="text/javascript">
 		function checkPattern(str)
 		{
 			var email_format = new RegExp("[a-z]{2,3}[1-9][a-z]{1,3}@virginia.edu");
@@ -94,13 +95,45 @@
 			else
 				return true;
 		}
-	</script>
+	</script> -->
 
 	<?php
+	$error_msg = $exp = "";
+	global $db;
+	$pattern = "/[a-z]{2,3}[1-9][a-z]{1,3}@virginia.edu/i";
+
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	  $_SESSION['user'] = $_POST['emailaddr'];
-	  $_SESSION['pwd'] = $_POST['password'];
-	  header('Location: ../favorites/favorites.php');
+		if ($_POST['emailaddr'] == '') {
+			$error_msg = "Please enter your email";
+		}
+		if ($_POST['password'] == '') {
+			$error_msg = "Please enter a password";
+		}
+		if !(preg_match($pattern, $_POST['emailaddr'])) {
+			$error_msg = "Please use a UVA email";
+		}
+		if ($_POST['password'] != $_POST['password-confirm']) {
+			$error_msg = "Passwords do not match";
+		} 
+		else {
+			$query = "INSERT INTO user (user_id, email, pwd) VALUES (NULL, :email, :pwd)";
+			$statement = $db->prepare($query);
+			$statement->bindValue(':email', $_POST['emailaddr']);
+			$pwd_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+			$statement->bindValue(':pwd', $pwd_hash);
+
+			if ($statement->execute()) {
+				$statement->store_result();
+				if ($statement->num_rows() == 1) {
+					$error_msg = "This email is already associated with an account";
+				} else {
+					$_SESSION['user'] = $_POST['emailaddr'];
+					$_SESSION['pwd'] = $_POST['password'];
+				}
+				$statement->closecursor();
+				header('Location: ../favorites/favorites.php');
+			}
+		}
 	}
 	?>
 
