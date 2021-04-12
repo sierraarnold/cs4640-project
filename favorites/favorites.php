@@ -12,6 +12,7 @@
 </head>
 
 <body>
+	<?php session_start(); ?>
 	<header>  
 		<nav class="navbar navbar-expand-md bg-light navbar-light">
 			<a class="navbar-brand" href="#">HoosConvert</a>

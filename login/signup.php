@@ -3,18 +3,20 @@
 <head>
 	<meta charset="utf-8">   
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- required to handle IE -->
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="author" content="Sierra Arnold & Min Suk Kim">
-	<title>Login to HoosConvert</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">  
+ 	<meta name="author" content="Sierra Arnold & Min Suk Kim">
+	<title>Sign Up | HoosConvert</title>
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 	<link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
+	<?php session_start(); ?>
 	<header>  
 		<nav class="navbar navbar-expand-md bg-light navbar-light">
 			<a class="navbar-brand" href="#">HoosConvert</a>
+
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -33,20 +35,26 @@
 	</header>
 
 	<div class="container">  
-		<h3>Log In to HoosConvert</h3>
-		<form class="login-form" action="favorites.html" method="post" onsubmit="return validateLogin()">
+		<h3>Create a HoosConvert Account</h3>
+		<form class="signup-form" action="favorites.html" method="post" onsubmit="return validateSignup()">
+			<!-- CSS won't work when changing class to 'signup-form', only works with 'login-form' -->
 			<div class="input-area">
 				<label>Email:</label>
-				<input type="email" name="email" id="emailaddr"/> <br/>
+				<input type="email" name="emailaddr" id="emailaddr"/> <br/>
 			</div>
 			<div class="input-area">
 				<label>Password: </label>
 				<input type="password" name="password" id="pwd"></input> <br/>
 			</div>
+			<div class="input-area">
+				<label>Confirm Password: </label>
+				<input type="password" name="password-confirm" id="pwd-confirm"></input> <br/>
+			</div>
 
-			<input type="submit" value="Login" class="btn btn-secondary" />
-			<p class="signup">Don't have an account?<br/><a href="signup.html">Sign up</a> to get access to<br/>
-			more conversion tools!</p> <br/>
+			<input type="submit" value="Sign up" class="btn btn-secondary" />
+			<p class="signup">Already have an account?<br/>
+				<!-- same as above -- CSS won't work with class="login-link" but work with "signup" -->
+				<a href="login.html">Log in</a> here</p> <br/>
 		</form>
 	</div>
 
@@ -58,7 +66,7 @@
 			return check;
 		}
 
-		function validateLogin()
+		function validateSignup()
 		{   
 			var email = document.getElementById("emailaddr").value;
 			if (email == "") {
@@ -70,12 +78,17 @@
 				return false;
 			}
 			var pwd = document.getElementById("pwd").value;
-			if (pwd != "password") {
-				alert("Incorrect password");
+			var pwd_2 = document.getElementById("pwd-confirm").value;			
+			if (pwd == "") {
+				alert ("Please enter a password");
 				return false;
 			}
-			if (pwd == "") {
-				alert ("Please enter your password");
+			if (pwd.length < 8) {
+				alert ("Please use a password that is at least 8 characters");
+				return false;
+			}
+			if (pwd != pwd_2) {
+				alert("Passwords do not match");
 				return false;
 			}
 			else
