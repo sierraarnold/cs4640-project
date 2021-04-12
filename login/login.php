@@ -16,7 +16,23 @@
 	<?php session_start(); ?>
 
 	<header>  
-		<?php include('navbar.html'); ?>
+		<nav class="navbar navbar-expand-md bg-light navbar-light">
+			<a class="navbar-brand" href="#">HoosConvert</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">   
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="screen2.html">Search</a>
+					</li>                                         
+					<li class="nav-item">
+						<a class="nav-link" href="signup.php">Log in</a>
+					</li>                       
+				</ul>
+			</div>  
+		</nav>
 	</header>
 
 	<?php require('connect-db.php'); ?>

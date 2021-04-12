@@ -27,7 +27,7 @@
 						<a class="nav-link" href="screen2.html">Search</a>
 					</li>                                         
 					<li class="nav-item">
-						<a class="nav-link" href="login.html">Log in</a>
+						<a class="nav-link" href="login.php">Log in</a>
 					</li>                       
 				</ul>
 			</div>  
@@ -36,8 +36,7 @@
 
 	<div class="container">  
 		<h3>Create a HoosConvert Account</h3>
-		<form class="signup-form" action="favorites.html" method="post" onsubmit="return validateSignup()">
-			<!-- CSS won't work when changing class to 'signup-form', only works with 'login-form' -->
+		<form class="signup-form" onsubmit="return validateSignup()" action="<?php $_SERVER['PHP_SELF']?>" method="post">
 			<div class="input-area">
 				<label>Email:</label>
 				<input type="email" name="emailaddr" id="emailaddr"/> <br/>
@@ -53,7 +52,6 @@
 
 			<input type="submit" value="Sign up" class="btn btn-secondary" />
 			<p class="signup">Already have an account?<br/>
-				<!-- same as above -- CSS won't work with class="login-link" but work with "signup" -->
 				<a href="login.html">Log in</a> here</p> <br/>
 		</form>
 	</div>
@@ -95,6 +93,14 @@
 				return true;
 		}
 	</script>
+
+	<?php
+	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	  $_SESSION['user'] = $_POST['email'];
+	  $_SESSION['pwd'] = $_POST['password'];
+	  header('Location: favorites.php');
+	}
+	?>
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
