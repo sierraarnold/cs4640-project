@@ -109,28 +109,33 @@
 		if ($_POST['password'] == '') {
 			$error_msg = "Please enter a password";
 		}
-		if !(preg_match($pattern, $_POST['emailaddr'])) {
+		if (!preg_match($pattern, $_POST['emailaddr'])) {
 			$error_msg = "Please use a UVA email";
 		}
 		if ($_POST['password'] != $_POST['password-confirm']) {
 			$error_msg = "Passwords do not match";
 		} 
 		else {
-			$query = "INSERT INTO user (user_id, email, pwd) VALUES (NULL, :email, :pwd)";
+			$query = "SELECT user_id FROM user WHERE email = ?";
 			$statement = $db->prepare($query);
-			$statement->bindValue(':email', $_POST['emailaddr']);
-			$pwd_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-			$statement->bindValue(':pwd', $pwd_hash);
-
 			if ($statement->execute()) {
 				$statement->store_result();
 				if ($statement->num_rows() == 1) {
 					$error_msg = "This email is already associated with an account";
-				} else {
-					$_SESSION['user'] = $_POST['emailaddr'];
-					$_SESSION['pwd'] = $_POST['password'];
 				}
 				$statement->closecursor();
+			}
+			else {
+				$query = "INSERT INTO user (user_id, email, pwd) VALUES (NULL, :email, :pwd)";
+				$statement = $db->prepare($query);
+				$statement->bindValue(':email', $_POST['emailaddr']);
+				$pwd_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+				$statement->bindValue(':pwd', $pwd_hash);
+				$statement->execute();
+				$statement->closecursor();
+
+				$_SESSION['user'] = $_POST['emailaddr'];
+				$_SESSION['pwd'] = $_POST['password'];
 				header('Location: ../favorites/favorites.php');
 			}
 		}
