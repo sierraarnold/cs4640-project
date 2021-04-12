@@ -13,6 +13,7 @@
 
 <body>
 	<?php session_start(); ?>
+	<?php require('../connect-db.php');?>
 	<header>  
 		<nav class="navbar navbar-expand-md bg-light navbar-light">
 			<a class="navbar-brand" href="#">HoosConvert</a>

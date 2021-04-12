@@ -34,6 +34,8 @@
 		</nav>
 	</header>
 
+	<?php require('../connect-db.php');?>
+
 	<div class="container">  
 		<h3>Create a HoosConvert Account</h3>
 		<form class="signup-form" onsubmit="return validateSignup()" action="<?php $_SERVER['PHP_SELF']?>" method="post">
@@ -52,7 +54,7 @@
 
 			<input type="submit" value="Sign up" class="btn btn-secondary" />
 			<p class="signup">Already have an account?<br/>
-				<a href="login.html">Log in</a> here</p> <br/>
+				<a href="login.php">Log in</a> here</p> <br/>
 		</form>
 	</div>
 
@@ -96,9 +98,9 @@
 
 	<?php
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	  $_SESSION['user'] = $_POST['email'];
+	  $_SESSION['user'] = $_POST['emailaddr'];
 	  $_SESSION['pwd'] = $_POST['password'];
-	  header('Location: favorites.php');
+	  header('Location: ../favorites/favorites.php');
 	}
 	?>
 

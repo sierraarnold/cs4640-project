@@ -27,7 +27,7 @@
             <a class="nav-link" href="screen2.html">Search</a>
           </li>                                         
           <li class="nav-item">
-            <a class="nav-link" href="signup.php">Log in</a>
+            <a class="nav-link" href="login.php">Log in</a>
           </li>                       
         </ul>
       </div>  

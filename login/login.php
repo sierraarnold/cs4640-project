@@ -28,14 +28,14 @@
 						<a class="nav-link" href="screen2.html">Search</a>
 					</li>                                         
 					<li class="nav-item">
-						<a class="nav-link" href="signup.php">Log in</a>
+						<a class="nav-link" href="login.php">Log in</a>
 					</li>                       
 				</ul>
 			</div>  
 		</nav>
 	</header>
 
-	<?php require('connect-db.php'); ?>
+	<?php require('../connect-db.php'); ?>
 
 	<div class="container">  
 		<h3>Log In to HoosConvert</h3>
@@ -50,7 +50,7 @@
 			</div>
 
 			<input type="submit" value="Login" class="btn btn-secondary" />
-			<p class="signup">Don't have an account?<br/><a href="signup.html">Sign up</a> to get access to<br/>
+			<p class="signup">Don't have an account?<br/><a href="signup.php">Sign up</a> to get access to<br/>
 			more conversion tools!</p> <br/>
 		</form>
 	</div>
@@ -92,7 +92,7 @@
 	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	  $_SESSION['user'] = $_POST['email'];
 	  $_SESSION['pwd'] = $_POST['password'];
-	  header('Location: favorites.php');
+	  header('Location: ../favorites/favorites.php');
 	}
 	?>
 
