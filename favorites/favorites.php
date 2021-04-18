@@ -1,10 +1,27 @@
+<?php 
+require('../connect-db.php');
+session_start();
+global $db;
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {			// need to fix
+	$query = "SELECT c.unit1, c.unit2, c.ratio FROM conversions c JOIN user u ON u.user_id = c.conversion_id WHERE u.email = :email";
+	$statement = $db->prepare($query);
+	$statement->bindValue(':email', $_SESSION['user']);	
+	$statement->execute();
+	// fetchAll() returns an array for all of the rows in the result set
+	$rows = $statement->fetchAll();
+	$statement->closecursor();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">   
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- required to handle IE -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">  
-	 <meta name="author" content="Sierra Arnold & Min Suk Kim">
+	<meta name="author" content="Sierra Arnold & Min Suk Kim">
 	<title>Favorites | HoosConvert</title>
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
@@ -12,8 +29,6 @@
 </head>
 
 <body>
-	<?php session_start(); ?>
-	<?php require('../connect-db.php');?>
 	<header>  
 		<nav class="navbar navbar-expand-md bg-light navbar-light">
 			<a class="navbar-brand" href="#">HoosConvert</a>
@@ -142,6 +157,44 @@
 			row.style.display = "none";
 		}
 	</script>
+
+	<div class="container">
+		<table class="table table-striped table-bordered">
+			<tr>
+				<th>Input Value</th>
+				<th>Input Unit</th>
+				<th>Output Value</th>
+				<th>Output Unit</th>
+				<th>(Delete?)</th>
+			</tr>      
+			<?php foreach ($rows as $row): ?>
+				<tr>
+					<td>
+						<input type="number" name="inputval"></input>
+					</td>
+					<td>
+						<?php echo $row['unit1']; ?> 
+					</td>        
+					<td>
+						<?php
+						echo $row['ratio'];			// use ratio to calculate and display new value here
+						?> 
+					</td>                
+					<td>
+						<?php echo $row['unit2']; ?> 
+					</td>                        
+					<td>
+						<form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+							<input type="submit" value="Delete" name="action" class="btn btn-danger" />      
+							<input type="hidden" name="conversion_id" value="<?php echo $task['conversion_id'] ?>" />
+						</form>
+					</td>                                
+				</tr>
+			<?php endforeach; ?>
+		</table>
+
+	</div>
+
 	
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
