@@ -150,14 +150,14 @@
                 <form name = "categories_list">
                     
                     <span>
-                        <select class = "select_cat" name = "dropdown_list" size = 1></select>
+                        <select class = "select_cat" name = "dropdown_list" size = "1"></select>
                     </span>
                     <br>
                     <br>
                     <!-- The calculator, minimum value is 0 since 'negative miles' doesn't make sense -->
                     <div class = "form-group">
                         
-                        <input name = "input" id = "initialVal" type = "number" min = "0" class = "form-control form-control-lg" placeholder = "Enter kilometers" />
+                        <input name = "input" id = "initialVal" type = "number" min = "0" class = "form-control form-control-lg" placeholder = "Enter: " />
                         <input type = "submit" name = "convt" value = "Convert" />
                         <div class="dropdownMenu">
                             <select id="selectFrom" name = "dropdown">
@@ -221,10 +221,9 @@
 
         function error() // Error message
         {
-        if(initialValue.value < 0) 
+        if(!is_numeric(initialValue.value))
             {
             resetVal(initialValue);
-            alert("Error: You have entered an invalid number. Please try again.")
             }
         }
 
@@ -234,11 +233,11 @@
         function(e)
         {
             error(); // Checks for validity
-            document.getElementById('result').style.visibility = "visible"; // Shows the boxes
-            let km = e.target.value;
+            // document.getElementById('result').style.visibility = "visible"; // Shows the boxes
+            // let km = e.target.value;
             // Calculations
-            document.getElementById('resultInMt').innerHTML = km * 1000;
-            document.getElementById('resultInFt').innerHTML = km * 3280.8398950131;
+            // document.getElementById('resultInMt').innerHTML = km * 1000;
+            // document.getElementById('resultInFt').innerHTML = km * 3280.8398950131;
             // document.getElementById('resultInMi').innerHTML = km / 1.609344;
         })
 
@@ -257,17 +256,26 @@
         $cc_input = $_GET['input'];
         $cc_dropdown = $_GET['dropdown'];
 
-        
+        // Goes back to kilometers whenever another unit is executed**
 
-        if($cc_dropdown == 'km')
+        if(!is_numeric($cc_input))
         {
+            die("Error: You have put in an invalid entry.");
+        }
+
+        if($cc_dropdown == 'km' && is_numeric($cc_input))
+        {
+            $meters = $cc_input * 1000;
+            $feet = $cc_input * 3280.8398950131;
             $miles = $cc_input / 1.609344;
             $yards = $cc_input * 1093.6132983;
+            echo '<span class="card" style="width: 27.5em;margin:0 auto"><div class="card-block"><h4>Miles(mi): </h4>'.$meters.'</span>';
+            echo '<span class="card" style="width: 27.5em;margin:0 auto"><div class="card-block"><h4>Miles(mi): </h4>'.$feet.'</span>';
             echo '<span class="card" style="width: 27.5em;margin:0 auto"><div class="card-block"><h4>Miles(mi): </h4>'.$miles.'</span>';
             echo '<span class="card" style="width: 27.5em;margin:0 auto"><div class="card-block"><h4>Yards(yd): </h4>'.$yards.'</span>';
         }
 
-        elseif($cc_dropdown == 'm')
+        elseif($cc_dropdown == 'm' && is_numeric($cc_input))
         {
             $miles = $cc_input / 1609.344;
             $yards = $cc_input * 1.0936133;
