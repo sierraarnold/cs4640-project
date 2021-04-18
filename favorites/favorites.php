@@ -39,7 +39,7 @@
 	</header>
 
 	<div>  
-		<h3><?php if(isset($_SESSION['user'])) echo $_SESSION['user']?>'s Favorites</h3>
+		<h3><?php if(isset($_COOKIE['user'])) echo htmlspecialchars($_COOKIE['user'])?>'s Favorites</h3>
 		<div class="conversion-box container p-3 my-3 bg-light border rounded-lg">
 			<div class="row">
 				<div class="col-5 d-flex justify-content-between">

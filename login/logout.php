@@ -44,7 +44,6 @@
     unset($_SESSION[$k]); 
   }
   session_destroy();
-  echo "sessionID = " . session_id() . "<br/>";
   setcookie("PHPSESSID", "", time()-3600, "/");
   }
   ?>

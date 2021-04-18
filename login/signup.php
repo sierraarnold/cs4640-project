@@ -7,12 +7,12 @@ global $db;
 $pattern = "/[a-z]{2,3}[1-9][a-z]{1,3}@virginia.edu/i";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	if (empty($_POST['emailaddr'])) {
+	if (empty($_POST['emailaddr'])) {									// check for input
 		$email_error_msg = "Please enter your email address";
-	} elseif (!preg_match($pattern, $_POST['emailaddr'])) {
+	} elseif (!preg_match($pattern, $_POST['emailaddr'])) {				// check that input matches UVA format
 		$email_error_msg = "Only UVA email addresses are accepted";
 	} else {
-		$query = "SELECT user_id FROM user WHERE email = :email";
+		$query = "SELECT user_id FROM user WHERE email = :email";		// check that email isn't associated with existing account
 		$statement = $db->prepare($query);
 		$statement->bindValue(':email', $_POST['emailaddr']);
 		$statement->execute();
@@ -24,13 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$statement->closecursor();
 	}
 
-	if (empty($_POST['password'])) {
+	if (empty($_POST['password'])) {									// check for input
 		$pw_error_msg = "Please enter a password";
-	} elseif ($_POST['password'] != $_POST['password-confirm']) {
+	} elseif ($_POST['password'] != $_POST['password-confirm']) {		// check that passwords match/check for confirm-password input
 		$pw_error_msg = "Passwords do not match";
 	} else {
 		$pwd = $_POST['password'];
-		if(empty($email_error_msg) && empty($pw_error_msg)) {
+		if (empty($email_error_msg) && empty($pw_error_msg)) {			// if no errors, create user account
 			$query = "INSERT INTO user (user_id, email, pwd) VALUES (NULL, :email, :pwd)";
 			$statement = $db->prepare($query);
 			$statement->bindValue(':email', $email);
@@ -39,13 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$statement->execute();
 
 			$_SESSION['user'] = $_POST['emailaddr'];
-			$_SESSION['pwd'] = $_POST['password'];
+			setcookie('user', $email, time() + (86400 * 30), "/");
 			header('Location: ../favorites/favorites.php');
 			$statement->closecursor();
 		}
-		
 	}
-
 }
 ?>
 
@@ -108,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			</form>
 		</div>
 
-		<!-- unused JS error messages -->
+	<!-- unused JS error messages -->
 	<!-- <script type="text/javascript">
 		function checkPattern(str)
 		{
