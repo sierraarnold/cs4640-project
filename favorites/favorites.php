@@ -8,10 +8,12 @@
 	<title>Favorites | HoosConvert</title>
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
+	<?php session_start(); ?>
+	<?php require('../connect-db.php');?>
 	<header>  
 		<nav class="navbar navbar-expand-md bg-light navbar-light">
 			<a class="navbar-brand" href="#">HoosConvert</a>
@@ -29,7 +31,7 @@
 						<a class="nav-link" href="#">Favorites</a>
 					</li>                                         
 					<li class="nav-item">
-						<a class="nav-link" href="#">Log out</a>
+						<a class="nav-link" href="../login/logout.php">Log out</a>
 					</li>                       
 				</ul>
 			</div>  
@@ -37,7 +39,7 @@
 	</header>
 
 	<div>  
-		<h3>Favorites</h3>
+		<h3><?php if(isset($_COOKIE['user'])) echo htmlspecialchars($_COOKIE['user'])?>'s Favorites</h3>
 		<div class="conversion-box container p-3 my-3 bg-light border rounded-lg">
 			<div class="row">
 				<div class="col-5 d-flex justify-content-between">
