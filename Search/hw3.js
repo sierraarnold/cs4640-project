@@ -1,3 +1,5 @@
+// Rick Kim
+
 // Variables
 var categories = new Array();
 var initialValue = document.getElementById('initialVal');
@@ -17,9 +19,9 @@ function update_searchbox(search_list, categories_array) {
 }
 
 // Anonymous function
-(function() {
-    alert('Welcome to our HoosConvert!');
-})();
+// (function() {
+//     alert('Welcome to our HoosConvert!');
+// })();
 
 // Arrow function, resets the values to 0 when error occurs
 let resetVal = (val) => val.value = 0;
