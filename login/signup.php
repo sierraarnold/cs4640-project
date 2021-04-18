@@ -1,3 +1,54 @@
+<?php
+require('../connect-db.php');
+session_start();
+
+$email_error_msg = $pw_error_msg = $email = $pwd = "";
+global $db;
+$pattern = "/[a-z]{2,3}[1-9][a-z]{1,3}@virginia.edu/i";
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	if (empty($_POST['emailaddr'])) {
+		$email_error_msg = "Please enter your email address";
+	} elseif (!preg_match($pattern, $_POST['emailaddr'])) {
+		$email_error_msg = "Only UVA email addresses are accepted";
+	} else {
+		$query = "SELECT user_id FROM user WHERE email = :email";
+		$statement = $db->prepare($query);
+		$statement->bindValue(':email', $_POST['emailaddr']);
+		$statement->execute();
+		if ($statement->rowCount() == 1) {
+			$email_error_msg = "This email is already associated with an account";
+		} else {
+			$email = $_POST['emailaddr'];
+		}
+		$statement->closecursor();
+	}
+
+	if (empty($_POST['password'])) {
+		$pw_error_msg = "Please enter a password";
+	} elseif ($_POST['password'] != $_POST['password-confirm']) {
+		$pw_error_msg = "Passwords do not match";
+	} else {
+		$pwd = $_POST['password'];
+		if(empty($email_error_msg) && empty($pw_error_msg)) {
+			$query = "INSERT INTO user (user_id, email, pwd) VALUES (NULL, :email, :pwd)";
+			$statement = $db->prepare($query);
+			$statement->bindValue(':email', $email);
+			$pwd_hash = password_hash($pwd, PASSWORD_BCRYPT);
+			$statement->bindValue(':pwd', $pwd_hash);
+			$statement->execute();
+
+			$_SESSION['user'] = $_POST['emailaddr'];
+			$_SESSION['pwd'] = $_POST['password'];
+			header('Location: ../favorites/favorites.php');
+			$statement->closecursor();
+		}
+		
+	}
+
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +63,6 @@
 </head>
 
 <body>
-	<?php session_start(); ?>
 	<header>  
 		<nav class="navbar navbar-expand-md bg-light navbar-light">
 			<a class="navbar-brand" href="#">HoosConvert</a>
@@ -34,18 +84,18 @@
 		</nav>
 	</header>
 
-	<?php require('../connect-db.php');?>
-
 	<div class="container">  
 		<h3>Create a HoosConvert Account</h3>
-		<form class="signup-form" action="<?php $_SERVER['PHP_SELF']?>" method="post">
+		<form class="signup-form" action="<?php htmlspecialchars($_SERVER['PHP_SELF'])?>" method="post">
 			<div class="input-area">
 				<label>Email:</label>
-				<input type="email" name="emailaddr" id="emailaddr"/> <br/>
+				<input type="email" name="emailaddr" id="emailaddr" class="form-control <?php echo (!empty($email_error_msg)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>"/> <br/>
+				<span class="invalid-feedback"><?php echo $email_error_msg; ?></span>
 			</div>
 			<div class="input-area">
 				<label>Password: </label>
-				<input type="password" name="password" id="pwd"></input> <br/>
+				<input type="password" name="password" id="pwd" class="form-control <?php echo (!empty($pw_error_msg)) ? 'is-invalid' : ''; ?>" value="<?php echo $pwd; ?>"/> <br/>
+				<span class="invalid-feedback"><?php echo $pw_error_msg; ?></span>
 			</div>
 			<div class="input-area">
 				<label>Confirm Password: </label>
@@ -96,51 +146,6 @@
 				return true;
 		}
 	</script> -->
-
-	<?php
-	$error_msg = $exp = "";
-	global $db;
-	$pattern = "/[a-z]{2,3}[1-9][a-z]{1,3}@virginia.edu/i";
-
-	if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-		if ($_POST['emailaddr'] == '') {
-			$error_msg = "Please enter your email";
-		}
-		if ($_POST['password'] == '') {
-			$error_msg = "Please enter a password";
-		}
-		if (!preg_match($pattern, $_POST['emailaddr'])) {
-			$error_msg = "Please use a UVA email";
-		}
-		if ($_POST['password'] != $_POST['password-confirm']) {
-			$error_msg = "Passwords do not match";
-		} 
-		else {
-			$query = "SELECT user_id FROM user WHERE email = ?";
-			$statement = $db->prepare($query);
-			if ($statement->execute()) {
-				$statement->store_result();
-				if ($statement->num_rows() == 1) {
-					$error_msg = "This email is already associated with an account";
-				}
-				$statement->closecursor();
-			}
-			else {
-				$query = "INSERT INTO user (user_id, email, pwd) VALUES (NULL, :email, :pwd)";
-				$statement = $db->prepare($query);
-				$statement->bindValue(':email', $_POST['emailaddr']);
-				$pwd_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-				$statement->bindValue(':pwd', $pwd_hash);
-				$statement->execute();
-				$statement->closecursor();
-
-				$_SESSION['user'] = $_POST['emailaddr'];
-				$_SESSION['pwd'] = $_POST['password'];
-				header('Location: ../favorites/favorites.php');
-			}
-		}
-	}
-	?>
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
