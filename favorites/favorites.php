@@ -40,10 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {			// need to fix
 			<div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">   
 				<ul class="navbar-nav">
 					<li class="nav-item">
-						<a class="nav-link" href="screen2.html">Search</a>
+						<a class="nav-link" href="#">Favorites</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Favorites</a>
+						<a class="nav-link" href="../search/screen2.php">Search</a>
 					</li>                                         
 					<li class="nav-item">
 						<a class="nav-link" href="../login/logout.php">Log out</a>
