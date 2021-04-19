@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 require('../connect-db.php');
 session_start();
 global $db;
