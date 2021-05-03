@@ -1,5 +1,36 @@
 <?php
-$input_error_msg = $success_msg = "";
+// header('Access-Control-Allow-Origin: http://localhost:4200');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding');
+header('Access-Control-Max-Age: 1000');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
+
+// process angular conversion form data
+// retrieve data from the request
+$postdata = file_get_contents("php://input");
+
+// (this example simply extracts the data and restructures them back)
+// Extract json format to PHP array
+$request = json_decode($postdata);
+
+$data = [];
+foreach ($request as $k => $v)
+{
+  $temp = "$k => $v";
+  $data[0]['post_'.$k] = $v;
+}
+// $temp will have the last key-value pair of the array
+
+$current_date = date("Y-m-d");
+
+// Send response (in json format) back the front end
+echo json_encode(['content'=>$data, 'response_on'=>$current_date]);
+
+
+
+
+
+
 
 // implementation for adding new conversion to conversions table
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -42,10 +73,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Home | HoosConvert</title>    
 </head>
 <body>
-    <?php if (!isset($_SESSION['user'])) {?> <style type="text/css">#conversionForm{display:none;}</style> <?php
-} else {?> <style type="text/css">#conversionForm{display:block;}</style> <?php
-} ?>
-
 <div class="container" id="conversionForm" style="width:50%">
     <h5 style="text-align:center">Need a conversion that's not in our database?<br/>Submit your own!</h5>
     <form action="<?php htmlspecialchars($_SERVER['PHP_SELF'])?>" method="post" style="margin:20px 10px 40px 10px;">
