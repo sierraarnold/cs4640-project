@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
                     <td>
                         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post"> 
                             <input type="submit" style="width:80%" value="Calculate" name="<?php echo $row['conversion_id']?>" class="btn btn-primary" style="margin:auto; display:flex;"/>
-                            <input type="number" name="inputval" step="0.0001"></input>                        
+                            <input type="number" name="<?php echo 'inputval'.$row['conversion_id']?>" step="0.0001"></input>                        
                         </form>
                     </td>
                     <td>
@@ -155,10 +155,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
                     <td>
                         <?php
                         $outputval = '';
-                        $id = $row['conversion_id'];
-                        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['<?php echo $id?>'])) {
+                        $id = $row["conversion_id"];
+                        echo $id;
+                        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST[$id])) {
                             $num = (float)$row['ratio'];
-                            $val = (float)$_POST['inputval'];
+                            $val = (float)$_POST['inputval'.$id];
                             $outputval = $num * $val;
                         }
                         echo $outputval;
@@ -174,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
                         </form>
                     </td>                                
                 </tr>
-            <?php endforeach; ?>
+            <?php endforeach;?>
          </table>
          <br/>
     </div>
