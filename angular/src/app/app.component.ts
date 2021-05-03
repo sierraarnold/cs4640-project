@@ -20,7 +20,6 @@ export class AppComponent {
 
 
   /* create an instance of an Conversion */
-  /* we will bind conversionModel to the form, allowing an update / delete transaction */
   conversionModel = new Conversion('', '', null);
 
   confirmSubmission(data: any): void {
@@ -34,8 +33,6 @@ export class AppComponent {
   onSubmit(form: any): void {
      console.log('You submitted value: ', form);
      this.data_submitted = form;
-
-     console.log('form submitted ', form);
 
      /*------*/
      // Prepare to send a request to the backend PHP
@@ -62,6 +59,6 @@ export class AppComponent {
      }, (error_in_communication) => {
         // An error occurs, handle an error in some way.
         console.log('Error ', error_in_communication);
-     })
+     });
   }
 }

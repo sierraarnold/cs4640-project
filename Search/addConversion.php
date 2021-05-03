@@ -1,6 +1,5 @@
 <?php
-// header('Access-Control-Allow-Origin: http://localhost:4200');
-header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Origin: http://localhost:4200');
 header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding');
 header('Access-Control-Max-Age: 1000');
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
@@ -30,7 +29,7 @@ echo json_encode(['content'=>$data, 'response_on'=>$current_date]);
 
 
 
-
+/*
 
 // implementation for adding new conversion to conversions table
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -57,20 +56,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $statement->closeCursor();
     }
 }
+*/
 ?>
 
-<!DOCTYPE html>
+
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">  <!-- required to handle IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="author" content="Min Suk Kim & Sierra Arnold">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../style.css">
 
-    <title>Home | HoosConvert</title>    
+    <title>New Conversion | HoosConvert</title>    
 </head>
 <body>
 <div class="container" id="conversionForm" style="width:50%">
@@ -94,4 +95,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </form>
 </div>
 </body>
-</html>
+</html> -->
