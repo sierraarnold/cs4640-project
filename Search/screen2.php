@@ -1,4 +1,10 @@
 <?php
+// header('Access-Control-Allow-Origin: http://localhost:4200');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding');
+header('Access-Control-Max-Age: 1000');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT');
+
 error_reporting(0);
 require('../connect-db.php');
 session_start();
@@ -45,92 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
     <link rel="stylesheet" href="../style.css">
     <!-- 
     Use a link tag to link an external resource.
-    A rel (relationship) specifies relationship between the current document and the linked resource.-->
-<!--     <style>
-        /* Title */
-        h1 {
-            font-family: cursive;
-            color: black;
-            line-height: normal;
-            font-weight: 200;
-            margin: 30px 10px 20px 10px;
-        }
-        /* The container box */
-        .container {
-            text-align: center;
-        }
-        /* Dropdown searchbox position*/
-        .container span {
-            position: relative;
-            width: 100%;
-        }
-        /* The actual searchbox */
-        .container span select {
-            background-color: steelblue;
-            color: seashell;
-            padding: 9px;
-            border: 0;
-            font-size: large;
-            width: 100%;
-        }
-        /* Dropdown list */
-        .container span::before, .container span::after {
-            position: absolute;
-            content: "";
-            pointer-events: none;
-        }
-        /* The small box that contains the dropdown arrow symbol */
-        .container span::before {
-            background-color: steelblue;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 2em;
-            border-radius: 0;
-        }
-        /* The arrow symbol */
-        .container span::after {
-            color: black;
-            top: 50%;
-            right: 1em;
-            margin-top: -.5em;
-            font-size: 0.71em;
-            content: "\25BC";
-        }
-        /* The warning message */
-        .form-group {
-            text-align: right;
-            line-height: 13px;
-        }
-        input[type = button]:hover {
-            background: black;
-            color: white;
-        }
-        .dropdownMenu {
-            text-align: left;
-            overflow: visible;
-            height: 100%;
-        }
-        .inputOption {
-            width: 100%;
-        }
-        .selectOption {
-            height: 25px;
-            font-size: 15px;
-        }
-        input, select, textarea {
-            box-sizing: border-box;
-            padding: 4px 12px 4px 12px;
-            margin: auto;
-        }
-        #warning {
-            text-align: center;
-        }
-        /* The result boxes */
-        #result {
-            text-align: left;
-        }
-    </style> -->  
+    A rel (relationship) specifies relationship between the current document and the linked resource.-->  
 </head>
 
 <body>
@@ -264,8 +185,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
          <br/>
     </div>
 
+    <?php if (!isset($_SESSION['user'])) {?> <style type="text/css">#conversionLink{display:none;}</style> <?php
+    } else {?> <style type="text/css">#conversionLink{display:block;}</style> <?php
+    } ?>
 
-    <?php include('addConversion.php'); ?>
+    <h5 id="conversionLink" style="text-align:center">Need a conversion that's not in our database?<br/>
+        <a href="http://localhost:4200/">Submit your own!</a></h5>
 
     <script>
         // Variables
