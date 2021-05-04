@@ -83,44 +83,132 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
                 <!-- Categories list -->
                 <form name = "categories_list">
                     <span>
-                        <select class = "select_cat" name = "dropdown_list" size = "1"></select>
+                        <select class = "select_cat" name = "dropdown_list" size = "1" onChange = "changeUnits(this, document.convertFrom.dropdown_unit)"></select>
                     </span>
-                    <br>
-                    <br>
-                    <div class = "form-group">
-                        <input name = "input" id = "initialVal" type = "number" min = "0" class = "form-control form-control-lg" placeholder = "Enter value" />
-                        <input type = "submit" name = "convt" value = "Convert" class="btn btn-primary"/>
-                        <div class="dropdownMenu">
-                            <select id="selectFrom" name = "dropdown">
-                                <option value = "km">Kilometers</option>
-                                <option value = "m">Meters</option>
-                                <option value = "cm">Centimeters</option>
-                                <option value = "mi">Miles</option>
-                            </select>
-                        </div>
-                        <small id = "warning" class = "form-text text-muted">Must be greater than 0.</small>
-                    </div>
                 </form>
-
-
-                <div id = "result">
-                    <div class = "card mb-2">
-                        <div class = "card-block">
-                            <h4>Meters(m):</h4>
-                            <div id = "resultInMt"></div>
+                <br>
+                <br>
+                <!-- The calculator, minimum value is 0 since 'negative miles' doesn't make sense -->
+                <div class = "form-group">
+                    <form name = "convertFrom">
+                        <input name = "input" id = "initialVal" type = "number" min = "0" class = "form-control form-control-lg" placeholder = "Enter: " />
+                        <input type = "submit" class="btn btn-primary" name = "convt" value = "Convert" />
+                        <div class="dropdownMenu">
+                            <select id = "selectFrom" name = "dropdown_unit"></select>
                         </div>
-                    </div>
-
-                    <div class = "card mb-2">
-                        <div class = "card-block">
-                            <h4>Feet(ft):</h4>
-                            <div id = "resultInFt"></div>
-                        </div>
-                    </div>
+                    </form>
+                    <small id = "warning" class = "form-text text-muted">Must be greater than 0.</small>
                 </div>
+                <div id = "result"></div>
             </div>
         </div>
     </div>
+
+    <?php
+        if(isset($_GET['convt'])) // built-in function
+        {
+            $cc_input = $_GET['input'];
+            $cc_dropdown = $_GET['dropdown_unit'];
+
+            // Goes back to kilometers whenever another unit is executed**
+            if(!is_numeric($cc_input))
+            {
+                die("Error: You have put in an invalid entry.");
+            }
+            if($cc_dropdown == 'Kilometers' && is_numeric($cc_input))
+            {
+                $meters = $cc_input * 1000;
+                $feet = $cc_input * 3280.8398950131;
+                $miles = $cc_input / 1.609344;
+                $yards = $cc_input * 1093.6132983;
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Meters(m): </h4>'.$meters.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Feet(ft): </h4>'.$feet.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Miles(mi): </h4>'.$miles.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Yards(yd): </h4>'.$yards.'</span>';
+            }
+            elseif($cc_dropdown == 'Meters' && is_numeric($cc_input))
+            {
+                $kilometers = $cc_input / 1000;
+                $feet = $cc_input * 3.28084;
+                $miles = $cc_input / 1609.344;
+                $yards = $cc_input * 1.0936133;
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Kilometers(km): </h4>'.$kilometers.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Feet(ft): </h4>'.$feet.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Miles(mi): </h4>'.$miles.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Yards(yd): </h4>'.$yards.'</span>';
+            }
+            elseif($cc_dropdown == 'Centimeters' && is_numeric($cc_input))
+            {
+                $kilometers = $cc_input / 100000;
+                $feet = $cc_input / 0.0328084;
+                $miles = $cc_input / 160934;
+                $yards = $cc_input * 0.010936132983;
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Kilometers(km): </h4>'.$kilometers.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Feet(ft): </h4>'.$feet.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Miles(mi): </h4>'.$miles.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Yards(yd): </h4>'.$yards.'</span>';
+            }
+            elseif($cc_dropdown == 'Inches' && is_numeric($cc_input))
+            {
+                $kilometers = $cc_input /39370;
+                $feet = $cc_input / 12;
+                $miles = $cc_input / 63360;
+                $yards = $cc_input / 36;
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Kilometers(km): </h4>'.$kilometers.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Feet(ft): </h4>'.$feet.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Miles(mi): </h4>'.$miles.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Yards(yd): </h4>'.$yards.'</span>';
+            }
+            elseif($cc_dropdown == 'Celsius' && is_numeric($cc_input))
+            {
+                $fahrenheit = ($cc_input * 1.8) + 32;
+                $kelv = $cc_input + 273.15;
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Fahrenheit: </h4>'.$fahrenheit.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Kelvin(K): </h4>'.$kelv.'</span>';
+            }
+            elseif($cc_dropdown == 'Fahrenheit' && is_numeric($cc_input))
+            {
+                $celsius = (($cc_input - 32) * 5 / 9);
+                $kelv = (($cc_input - 32) * 5 / 9) + 273.15;
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Celsius: </h4>'.$celsius.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Kelvin(K): </h4>'.$kelv.'</span>';
+            }
+            elseif($cc_dropdown == 'Kelvin' && is_numeric($cc_input))
+            {
+                $fahrenheit = ($cc_input - 273.15) * 1.8 + 32;
+                $celsius = $cc_input - 273.15;
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Fahrenheit: </h4>'.$fahrenheit.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Celsius(K): </h4>'.$celsius.'</span>';
+            }
+            elseif($cc_dropdown == 'Kilograms' && is_numeric($cc_input))
+            {
+                $lb = $cc_input * 2.2046226218;
+                $oz = $cc_input * 35.273962;
+                $gram = $cc_input * 1000;
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Pounds(lb): </h4>'.$lb.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Ounces(oz): </h4>'.$oz.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Grams(g): </h4>'.$gram.'</span>';
+            }
+            elseif($cc_dropdown == 'Pounds' && is_numeric($cc_input))
+            {
+                $kg = $cc_input / 2.2046226218;
+                $oz = $cc_input * 16;
+                $gram = $cc_input * 453.59237;
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Kilograms(kg): </h4>'.$kg.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Ounces(oz): </h4>'.$oz.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Grams(g): </h4>'.$gram.'</span>';
+            }
+            elseif($cc_dropdown == 'Ounces' && is_numeric($cc_input))
+            {
+                $lb = $cc_input / 16;
+                $kg = $cc_input / 35.273962;
+                $gram = $cc_input * 28.34952;
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Pounds(lb): </h4>'.$lb.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Kilograms(kg): </h4>'.$kg.'</span>';
+                echo '<span class="card" style="width: 27.5em;margin:0 auto"><h4>Grams(g): </h4>'.$gram.'</span>';
+            }
+        }
+    ?>
 
     <div class="container">
         <h3>Search the database for conversions</h3>
@@ -144,8 +232,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
                 <tr>
                     <td>
                         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post"> 
-                            <input type="submit" style="width:60%" value="Calculate" name="<?php echo $row['conversion_id']?>" class="btn btn-primary" style="margin:auto; display:flex; width:75%;"/>
-                            <input type="number" name="<?php echo 'inputval'.$row['conversion_id']?>" step="0.0001"></input>                        
+                            <input type="submit" value="Calculate" name="<?php echo $row['conversion_id']?>" 
+                            class="btn btn-primary" style="margin:auto; display:flex; width:75%;"/>
+                            <input type="number" name="<?php echo 'inputval'.$row['conversion_id']?>" step="0.0001"/>                        
                         </form>
                     </td>
                     <td>
@@ -171,58 +260,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
                         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
                             <input type="submit" value="Save" style="width:80%" name="<?php echo 'favorite'.$row['conversion_id']?>" class="btn btn-secondary"/>
                             <?php
-                                $id = $row['conversion_id'];
-                                if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['favorite'.$id])) {
-                                    $query = "INSERT INTO user_conversions (user_id, conversion_id) SELECT u.user_id, c.conversion_id FROM 
-                                        (SELECT c.conversion_id FROM conversions AS c UNION u.user_id, u.email FROM user AS u)
-                                        WHERE u.email = :email AND c.conversion_id = :currid";
-                                    $statement = $db->prepare($query);
-                                    $statement->bindValue(':currid', $row['conversion_id']);
-                                    $statement->bindValue(':email', $_SESSION['user']);
-                                    $statement->execute();
-                                    $statement->closecursor();
-                                    echo "Saved to favorites";
-                                }
+                            $id = $row['conversion_id'];
+                            if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['favorite'.$id])) {
+                                $query = "INSERT INTO user_conversions (user_id, conversion_id) SELECT u.user_id, c.conversion_id FROM 
+                                (SELECT c.conversion_id FROM conversions AS c UNION u.user_id, u.email FROM user AS u)
+                                WHERE u.email = :email AND c.conversion_id = :currid";
+                                $statement = $db->prepare($query);
+                                $statement->bindValue(':currid', $row['conversion_id']);
+                                $statement->bindValue(':email', $_SESSION['user']);
+                                $statement->execute();
+                                $statement->closecursor();
+                                echo "Saved to favorites";
+                            }
                             ?>
                         </form>
                     </td>                                
                 </tr>
             <?php endforeach;?>
-         </table>
-         <br/>
+        </table>
+        <br/>
     </div>
 
     <?php if (!isset($_SESSION['user'])) {?> <style type="text/css">#conversionLink{display:none;}</style> <?php
-    } else {?> <style type="text/css">#conversionLink{display:block;}</style> <?php
-    } ?>
+} else {?> <style type="text/css">#conversionLink{display:block;}</style> <?php
+} ?>
 
-    <h5 id="conversionLink">Need a conversion that's not in our database?<br/>
-        <a href="http://localhost:4200/">Submit your own!</a></h5><br/>
+<h5 id="conversionLink">Need a conversion that's not in our database?<br/>
+    <a href="http://localhost:4200/">Submit your own!</a></h5><br/>
 
     <script>
         // Variables
         var categories = new Array();
+        var unitsArr = new Array();
+
+        categories[0] = "Length";
+        categories[1] = "Temperature";
+        categories[2] = "Mass";
+
+        unitsArr[0] = new Array("Kilometers", "Meters", "Centimeters", "Inches");
+        unitsArr[1] = new Array("Celsius", "Fahrenheit", "Kelvin");
+        unitsArr[2] = new Array("Kilograms", "Pounds", "Ounces");
+
         var initialValue = document.getElementById('initialVal');
 
         initialValue.addEventListener("keyup", error);
 
-        // Categories
-        categories[0] = "Length";
-        categories[1] = "Area";
-
         // Functions
-        function update_searchbox(search_list, categories_array) // user-defined function
-        {
-            search_list.length = categories_array.length;
-            for (i = 0; i < categories_array.length; i++) 
-            {
-                search_list.options[i].text = categories_array[i];
-            }
-        }
-
-        // Arrow function, resets the values to 0 when error occurs
-        let resetVal = (val) => val.value = 0;
-
         function error() // Error message
         {
             if(!is_numeric(initialValue.value))
@@ -231,61 +314,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
             }
         }
 
-        // Actual calculations
+        function changeUnits(category, unit) {
+            var i;
+            i = category.selectedIndex;
+            updateArr(unit, unitsArr[i]);
+        }
+
+        function updateArr(dropdownLst, dropdownArr) {
+            var i;
+            dropdownLst.length = dropdownArr.length;
+            for (i = 0; i < dropdownArr.length; i++) {
+                dropdownLst.options[i].text = dropdownArr[i];
+            }
+        }
+
         document.getElementById('result').style.visibility = "hidden"; // Hides the output boxes until the user enters values
         document.getElementById('initialVal').addEventListener('input',
             function(e)
             {
             error(); // Checks for validity
-            // document.getElementById('result').style.visibility = "visible"; // Shows the boxes
-            // let km = e.target.value;
-            // Calculations
-            // document.getElementById('resultInMt').innerHTML = km * 1000;
-            // document.getElementById('resultInFt').innerHTML = km * 3280.8398950131;
-            // document.getElementById('resultInMi').innerHTML = km / 1.609344;
         })
 
-        // How the web application will initially look
         window.onload = function(e) 
         {
-            update_searchbox(document.categories_list.dropdown_list, categories);
+            updateArr(document.categories_list.dropdown_list, categories);
+            changeUnits(document.categories_list.dropdown_list, document.convertFrom.dropdown_unit);
         }
     </script>
 </body>
 </html>
-
-<?php
-    if(isset($_GET['convt'])) // built-in function
-    {
-        $cc_input = $_GET['input'];
-        $cc_dropdown = $_GET['dropdown'];
-
-        // Goes back to kilometers whenever another unit is executed**
-
-        if(!is_numeric($cc_input))
-        {
-            die("Error: You have put in an invalid entry.");
-        }
-
-        if($cc_dropdown == 'km' && is_numeric($cc_input))
-        {
-            $meters = $cc_input * 1000;
-            $feet = $cc_input * 3280.8398950131;
-            $miles = $cc_input / 1.609344;
-            $yards = $cc_input * 1093.6132983;
-            echo '<span class="card" style="width: 27.5em;margin:0 auto"><div class="card-block"><h4>Miles(mi): </h4>'.$meters.'</span>';
-            echo '<span class="card" style="width: 27.5em;margin:0 auto"><div class="card-block"><h4>Miles(mi): </h4>'.$feet.'</span>';
-            echo '<span class="card" style="width: 27.5em;margin:0 auto"><div class="card-block"><h4>Miles(mi): </h4>'.$miles.'</span>';
-            echo '<span class="card" style="width: 27.5em;margin:0 auto"><div class="card-block"><h4>Yards(yd): </h4>'.$yards.'</span>';
-        }
-
-        elseif($cc_dropdown == 'm' && is_numeric($cc_input))
-        {
-            $miles = $cc_input / 1609.344;
-            $yards = $cc_input * 1.0936133;
-            echo '<span class="card" style="width: 27.5em;margin:0 auto"><div class="card-block"><h4>Miles(mi): </h4>'.$miles.'</span>';
-            echo '<span class="card" style="width: 27.5em;margin:0 auto"><div class="card-block"><h4>Yards(yd): </h4>'.$yards.'</span>';
-        }
-    }
-
-    ?>
