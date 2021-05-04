@@ -44,9 +44,8 @@
   </button>
 </form>
 
+<p *ngIf="display_confirm" [style.margin-top]="'30px'" [style.color]="'green'"> {{ confirm_msg | json }} </p>
 <p>Response from PHP: {{ responsedata | json }} </p>
-<p>From form: {{ conversionForm.value | json }} </p>
-<p>From model: {{ conversionModel | json }} </p>
 
 </div>
 

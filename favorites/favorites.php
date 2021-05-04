@@ -4,7 +4,8 @@ session_start();
 global $db;
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {			// need to fix
-	$query = "SELECT c.unit1, c.unit2, c.ratio FROM conversions c JOIN user u ON u.user_id = c.conversion_id WHERE u.email = :email";
+	$query = "SELECT c.unit1, c.unit2, c.ratio FROM conversions AS c JOIN user_conversions AS uc 
+		ON uc.conversion_id = c.conversion_id JOIN user AS u ON uc.user_id = u.user_id WHERE u.email = :email";
 	$statement = $db->prepare($query);
 	$statement->bindValue(':email', $_SESSION['user']);	
 	$statement->execute();

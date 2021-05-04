@@ -17,17 +17,18 @@ export class AppComponent {
   author = 'Sierra Arnold and Min Suk Kim';
 
   confirm_msg = '';
+  display_confirm = false;
   data_submitted = '';
 
   /* create an instance of a conversion, assuming there is one existent */
   conversionModel = new Conversion('', '', null);
+  responsedata = new Conversion('','',null);    // to store a response from the backend
 
   confirmSubmission(data: any): void {
      console.log(data);
-     this.confirm_msg = 'You submitted the conversion ' + data.unit1 + ' to ' + data.unit2 + '.';
+     this.confirm_msg = 'You submitted the conversion ' + data.unit1 + ' to ' + data.unit2 + '. Thank you!';
+     this.display_confirm = true;
   }
-
-  responsedata = new Conversion('','',null);    // to store a response from the backend
 
   // passing in a form variable of type any, no return result
   onSubmit(form: any): void {
