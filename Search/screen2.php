@@ -86,8 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
                         <select class = "select_cat" name = "dropdown_list" size = "1" onChange = "changeUnits(this, document.convertFrom.dropdown_unit)"></select>
                     </span>
                 </form>
-                <br>
-                <br>
                 <!-- The calculator, minimum value is 0 since 'negative miles' doesn't make sense -->
                 <div class = "form-group">
                     <form name = "convertFrom">
@@ -214,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
         <h3>Search the database for conversions</h3>
         <form action="<?php htmlspecialchars($_SERVER['PHP_SELF'])?>" method="get">
             <div class="form-group" style="width: 60%;text-align: center;">
-                <input type="text" name="input" placeholder="Enter an input unit" class="form-control <?php echo (!empty($search_error_msg)) ? 'is-invalid' : ''; ?>"/>
+                <input type="text" name="input" style="width: 70%" placeholder="Enter an input unit" class="form-control <?php echo (!empty($search_error_msg)) ? 'is-invalid' : ''; ?>"/>
                 <span class="invalid-feedback"><?php echo $search_error_msg; ?></span>
                 <input type="submit" value="Search" name="search" class="btn btn-primary"/><br/>
             </div>      
@@ -233,7 +231,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
                     <td>
                         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post"> 
                             <input type="submit" value="Calculate" name="<?php echo $row['conversion_id']?>" 
-                            class="btn btn-primary" style="margin:auto; display:flex; width:75%;"/>
+                            class="btn btn-primary" style="width:40%"/>
                             <input type="number" name="<?php echo 'inputval'.$row['conversion_id']?>" step="0.0001"/>                        
                         </form>
                     </td>
@@ -244,7 +242,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
                         <?php
                         $outputval = '';
                         $id = $row["conversion_id"];
-                        echo $id;
                         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['inputval'.$id])) {
                             $num = (float)$row['ratio'];
                             $val = (float)$_POST['inputval'.$id];
@@ -258,7 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])) {
                     </td>                        
                     <td>
                         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                            <input type="submit" value="Save" style="width:80%" name="<?php echo 'favorite'.$row['conversion_id']?>" class="btn btn-secondary"/>
+                            <input type="submit" value="Save" style="width:40%" name="<?php echo 'favorite'.$row['conversion_id']?>" class="btn btn-secondary"/>
                             <?php
                             $id = $row['conversion_id'];
                             if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['favorite'.$id])) {

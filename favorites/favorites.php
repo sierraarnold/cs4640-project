@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {			// need to fix
 		<div class="conversion-box container p-3 my-3 bg-light border rounded-lg">
 			<div class="row">
 				<div class="col-5 d-flex justify-content-between">
-					<input class="conversion-num" input type="number" id="conversion1" oninput="ozConversion()" style="width: 50%;"></input>
+					<input class="conversion-num" input type="number" id="conversion1" oninput="ozConversion()" style="width: 50%;"/>
 					<label class="unit">Ounces (Oz)</label>
 					<!-- JS has to be inside div because it doesn't display when at the bottom -->
 					<script>
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {			// need to fix
 		<div class="conversion-box container p-3  my-3 bg-light border rounded-lg">
 			<div class="row">
 				<div class="col-5 d-flex justify-content-between">
-					<input class="conversion-num" type="number" id="conversion2" oninput="usdConversion()" style="width: 50%;"></input>
+					<input class="conversion-num" type="number" id="conversion2" oninput="usdConversion()" style="width: 50%;"/>
 					<label class="unit">US Dollars (USD)</label>
 					<script>
 						function usdConversion() {
@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {			// need to fix
 		<div class="conversion-box container p-3 my-3 bg-light border rounded-lg">
 			<div class="row">
 				<div class="col-5 d-flex justify-content-between">
-					<input class="conversion-num" type="number" id="conversion3" oninput="kphConversion()" style="width: 50%;"></input>
+					<input class="conversion-num" type="number" id="conversion3" oninput="kphConversion()" style="width: 50%;"/>
 					<label class="unit">Kilometers/hour</label>
 					<script>
 						function kphConversion() {
@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {			// need to fix
 		<div id="hide-row" class="conversion-box container p-3 my-3 bg-light border rounded-lg">
 			<div class="row">
 				<div class="col-5 d-flex justify-content-between">
-					<input class="conversion-num" type="number" id="conversion4" oninput="ftConversion()" style="width: 50%;"></input>
+					<input class="conversion-num" type="number" id="conversion4" oninput="ftConversion()" style="width: 50%;"/>
 					<label class="unit">Feet</label>
 					<script>
 						function ftConversion() {
@@ -159,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {			// need to fix
 		}
 	</script>
 
-	<div class="container">
+<!-- 	<div class="container">
 		<table class="table table-striped table-bordered">
 			<tr>
 				<th>Input Value</th>
@@ -171,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {			// need to fix
 			<?php foreach ($rows as $row): ?>
 				<tr>
 					<td>
-						<input type="number" name="inputval"></input>
+						<input type="number" name="inputval"/>
 					</td>
 					<td>
 						<?php echo $row['unit1']; ?> 
@@ -193,10 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {			// need to fix
 				</tr>
 			<?php endforeach; ?>
 		</table>
-
-	</div>
-
-	
+	</div> -->
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
