@@ -114,7 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			var check = email_format.test(str);
 			return check;
 		}
-
 		function validateSignup()
 		{   
 			var email = document.getElementById("emailaddr").value;
